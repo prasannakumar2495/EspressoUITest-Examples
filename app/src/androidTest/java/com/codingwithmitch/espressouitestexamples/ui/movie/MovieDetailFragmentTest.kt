@@ -40,11 +40,13 @@ class MovieDetailFragmentTest{
         )
 
 
-        // NOTE:
-        // Also could have built a "FakeMoviesRemoteDataSource" (AKA a STUB).
-        // I don't think it matters in this case.
-        // Probably for a larger repository and more complex app I would stub the repository. Then
-        // you could test errors, various success cases, etc...
+        /*
+        NOTE:
+        Also could have built a "FakeMoviesRemoteDataSource" (AKA a STUB).
+        I don't think it matters in this case.
+        Probably for a larger repository and more complex app I would stub the repository. Then
+        you could test errors, various success cases, etc...
+        */
         val moviesDataSource = mockk<MoviesRemoteDataSource>()
         every {
             moviesDataSource.getMovie(movieId)
