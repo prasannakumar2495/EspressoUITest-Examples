@@ -1,0 +1,148 @@
+Index: app/src/androidTest/java/com/codingwithmitch/espressouitestexamples/MainActivityTest.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.codingwithmitch.espressouitestexamples\n\nimport android.app.Activity\nimport android.app.Instrumentation.ActivityResult\nimport android.content.Intent\nimport android.graphics.BitmapFactory\nimport android.os.Bundle\nimport android.provider.MediaStore\nimport androidx.test.espresso.Espresso.onView\nimport androidx.test.espresso.action.ViewActions.click\nimport androidx.test.espresso.assertion.ViewAssertions.matches\nimport androidx.test.espresso.intent.Intents.intended\nimport androidx.test.espresso.intent.Intents.intending\nimport androidx.test.espresso.intent.matcher.IntentMatchers.hasAction\nimport androidx.test.espresso.intent.rule.IntentsTestRule\nimport androidx.test.espresso.matcher.ViewMatchers.withId\nimport androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner\nimport com.codingwithmitch.espressouitestexamples.ImageViewHasDrawableMatcher.hasDrawable\nimport org.hamcrest.CoreMatchers.not\nimport org.hamcrest.Matcher\nimport org.junit.Rule\nimport org.junit.Test\nimport org.junit.runner.RunWith\n\n\n@RunWith(AndroidJUnit4ClassRunner::class)\nclass MainActivityTest{\n\n    @get:Rule\n    val intentsTestRule = IntentsTestRule(MainActivity::class.java)\n\n    @Test\n    fun  test_cameraIntent() {\n\n        // GIVEN\n        val activityResult = createImageCaptureActivityResultStub()\n        val expectedIntent: Matcher<Intent> = hasAction(MediaStore.ACTION_IMAGE_CAPTURE)\n        intending(expectedIntent).respondWith(activityResult)\n\n        // Execute and Verify\n        onView(withId(R.id.image)).check(matches(not(hasDrawable())))\n        onView(withId(R.id.button_launch_camera)).perform(click())\n        intended(expectedIntent)\n        onView(withId(R.id.image)).check(matches(hasDrawable()))\n    }\n\n    private fun createImageCaptureActivityResultStub(): ActivityResult? {\n        val bundle = Bundle()\n        bundle.putParcelable(\n            KEY_IMAGE_DATA, BitmapFactory.decodeResource(\n                intentsTestRule.getActivity().getResources(),\n                R.drawable.ic_launcher_background\n            )\n        )\n        val resultData = Intent()\n        resultData.putExtras(bundle)\n        return ActivityResult(Activity.RESULT_OK, resultData)\n    }\n}\n\n\n\n\n\n\n\n\n\n\n\n\n\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/androidTest/java/com/codingwithmitch/espressouitestexamples/MainActivityTest.kt b/app/src/androidTest/java/com/codingwithmitch/espressouitestexamples/MainActivityTest.kt
+--- a/app/src/androidTest/java/com/codingwithmitch/espressouitestexamples/MainActivityTest.kt	(revision b105bca7c3b17e6faa52492b44075b186827accd)
++++ b/app/src/androidTest/java/com/codingwithmitch/espressouitestexamples/MainActivityTest.kt	(date 1649653775895)
+@@ -26,6 +26,7 @@
+ @RunWith(AndroidJUnit4ClassRunner::class)
+ class MainActivityTest{
+ 
++    //when ever we are writing the test for intent, we need to write the below rule.
+     @get:Rule
+     val intentsTestRule = IntentsTestRule(MainActivity::class.java)
+ 
+Index: app/build.gradle
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>apply plugin: 'com.android.application'\napply plugin: 'kotlin-android'\napply plugin: 'kotlin-android-extensions'\napply plugin: 'kotlin-kapt'\n\nandroid {\n    compileSdkVersion 29\n    buildToolsVersion \"29.0.2\"\n    defaultConfig {\n        applicationId \"com.codingwithmitch.espressouitestexamples\"\n        minSdkVersion 21\n        targetSdkVersion 29\n        versionCode 1\n        versionName \"1.0\"\n        testInstrumentationRunner \"androidx.test.runner.AndroidJUnitRunner\"\n    }\n    buildTypes {\n        release {\n            minifyEnabled false\n            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'\n        }\n    }\n\n    compileOptions {\n        sourceCompatibility = '1.8'\n        targetCompatibility = '1.8'\n    }\n\n    tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {\n        kotlinOptions {\n            jvmTarget = \"1.8\"\n        }\n    }\n}\n\ndependencies {\n    implementation fileTree(dir: 'libs', include: ['*.jar'])\n    implementation \"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version\"\n    implementation 'androidx.appcompat:appcompat:1.1.0'\n    implementation 'androidx.core:core-ktx:1.1.0'\n    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'\n    testImplementation 'junit:junit:4.12'\n\n    // Espresso\n    def androidx_test_espresso = \"3.1.0\"\n    androidTestImplementation \"androidx.test.espresso:espresso-core:$androidx_test_espresso\"\n    androidTestImplementation \"androidx.test.espresso:espresso-contrib:$androidx_test_espresso\"\n    androidTestImplementation \"androidx.test.espresso:espresso-intents:$androidx_test_espresso\"\n\n\n    // androidx.test\n    def androidx_test = \"1.1.0\"\n    androidTestImplementation \"androidx.test:runner:$androidx_test\"\n    androidTestImplementation \"androidx.test:core:$androidx_test\"\n    androidTestImplementation \"androidx.test.ext:junit-ktx:$androidx_test\"\n\n    //glide\n    def glide_version = \"4.9.0\"\n    implementation \"com.github.bumptech.glide:glide:$glide_version\"\n    annotationProcessor \"com.github.bumptech.glide:compiler:$glide_version\"\n\n}\n\n\n\n\n\n\n\n\n\n\n\n\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/build.gradle b/app/build.gradle
+--- a/app/build.gradle	(revision b105bca7c3b17e6faa52492b44075b186827accd)
++++ b/app/build.gradle	(date 1649653775909)
+@@ -4,12 +4,12 @@
+ apply plugin: 'kotlin-kapt'
+ 
+ android {
+-    compileSdkVersion 29
++    compileSdkVersion 30
+     buildToolsVersion "29.0.2"
+     defaultConfig {
+         applicationId "com.codingwithmitch.espressouitestexamples"
+         minSdkVersion 21
+-        targetSdkVersion 29
++        targetSdkVersion 30
+         versionCode 1
+         versionName "1.0"
+         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+Index: .idea/runConfigurations.xml
+===================================================================
+diff --git a/.idea/runConfigurations.xml b/.idea/runConfigurations.xml
+deleted file mode 100644
+--- a/.idea/runConfigurations.xml	(revision b105bca7c3b17e6faa52492b44075b186827accd)
++++ /dev/null	(revision b105bca7c3b17e6faa52492b44075b186827accd)
+@@ -1,12 +0,0 @@
+-<?xml version="1.0" encoding="UTF-8"?>
+-<project version="4">
+-  <component name="RunConfigurationProducerService">
+-    <option name="ignoredProducers">
+-      <set>
+-        <option value="org.jetbrains.plugins.gradle.execution.test.runner.AllInPackageGradleConfigurationProducer" />
+-        <option value="org.jetbrains.plugins.gradle.execution.test.runner.TestClassGradleConfigurationProducer" />
+-        <option value="org.jetbrains.plugins.gradle.execution.test.runner.TestMethodGradleConfigurationProducer" />
+-      </set>
+-    </option>
+-  </component>
+-</project>
+\ No newline at end of file
+Index: .idea/gradle.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<project version=\"4\">\n  <component name=\"GradleSettings\">\n    <option name=\"linkedExternalProjectsSettings\">\n      <GradleProjectSettings>\n        <option name=\"distributionType\" value=\"DEFAULT_WRAPPED\" />\n        <option name=\"externalProjectPath\" value=\"$PROJECT_DIR$\" />\n        <option name=\"modules\">\n          <set>\n            <option value=\"$PROJECT_DIR$\" />\n            <option value=\"$PROJECT_DIR$/app\" />\n          </set>\n        </option>\n        <option name=\"resolveModulePerSourceSet\" value=\"false\" />\n        <option name=\"testRunner\" value=\"PLATFORM\" />\n      </GradleProjectSettings>\n    </option>\n  </component>\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/gradle.xml b/.idea/gradle.xml
+--- a/.idea/gradle.xml	(revision b105bca7c3b17e6faa52492b44075b186827accd)
++++ b/.idea/gradle.xml	(date 1649653775901)
+@@ -1,10 +1,13 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+ <project version="4">
++  <component name="GradleMigrationSettings" migrationVersion="1" />
+   <component name="GradleSettings">
+     <option name="linkedExternalProjectsSettings">
+       <GradleProjectSettings>
++        <option name="testRunner" value="GRADLE" />
+         <option name="distributionType" value="DEFAULT_WRAPPED" />
+         <option name="externalProjectPath" value="$PROJECT_DIR$" />
++        <option name="gradleJvm" value="1.8" />
+         <option name="modules">
+           <set>
+             <option value="$PROJECT_DIR$" />
+@@ -12,7 +15,6 @@
+           </set>
+         </option>
+         <option name="resolveModulePerSourceSet" value="false" />
+-        <option name="testRunner" value="PLATFORM" />
+       </GradleProjectSettings>
+     </option>
+   </component>
+Index: .idea/compiler.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/compiler.xml b/.idea/compiler.xml
+new file mode 100644
+--- /dev/null	(date 1649653775907)
++++ b/.idea/compiler.xml	(date 1649653775907)
+@@ -0,0 +1,6 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<project version="4">
++  <component name="CompilerConfiguration">
++    <bytecodeTargetLevel target="11" />
++  </component>
++</project>
+\ No newline at end of file
+Index: .idea/jarRepositories.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/jarRepositories.xml b/.idea/jarRepositories.xml
+new file mode 100644
+--- /dev/null	(date 1649653775905)
++++ b/.idea/jarRepositories.xml	(date 1649653775905)
+@@ -0,0 +1,25 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<project version="4">
++  <component name="RemoteRepositoriesConfiguration">
++    <remote-repository>
++      <option name="id" value="central" />
++      <option name="name" value="Maven Central repository" />
++      <option name="url" value="https://repo1.maven.org/maven2" />
++    </remote-repository>
++    <remote-repository>
++      <option name="id" value="jboss.community" />
++      <option name="name" value="JBoss Community repository" />
++      <option name="url" value="https://repository.jboss.org/nexus/content/repositories/public/" />
++    </remote-repository>
++    <remote-repository>
++      <option name="id" value="BintrayJCenter" />
++      <option name="name" value="BintrayJCenter" />
++      <option name="url" value="https://jcenter.bintray.com/" />
++    </remote-repository>
++    <remote-repository>
++      <option name="id" value="Google" />
++      <option name="name" value="Google" />
++      <option name="url" value="https://dl.google.com/dl/android/maven2/" />
++    </remote-repository>
++  </component>
++</project>
+\ No newline at end of file
