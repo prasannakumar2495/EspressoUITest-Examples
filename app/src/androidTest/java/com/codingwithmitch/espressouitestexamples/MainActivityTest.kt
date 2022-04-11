@@ -26,6 +26,7 @@ import org.junit.runner.RunWith
 @RunWith(AndroidJUnit4ClassRunner::class)
 class MainActivityTest{
 
+    //when ever we are writing the test for intent, we need to write the below rule.
     @get:Rule
     val intentsTestRule = IntentsTestRule(MainActivity::class.java)
 
