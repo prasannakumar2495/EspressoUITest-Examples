@@ -50,7 +50,7 @@ class MoviesRemoteDataSource: MoviesDataSource {
             directors = directors,
             star_actors = star_actors
         )
-        MOVIES_REMOTE_DATA.put(id, movie)
+        MOVIES_REMOTE_DATA[id] = movie
     }
 
 
