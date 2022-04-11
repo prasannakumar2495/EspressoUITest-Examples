@@ -30,7 +30,7 @@ class MainActivityTest{
     val intentsTestRule = IntentsTestRule(MainActivity::class.java)
 
     @Test
-    fun  test_cameraIntent() {
+    fun  test_cameraIntent_isBitMapSetToImageView() {
 
         // GIVEN
         val activityResult = createImageCaptureActivityResultStub()
@@ -48,7 +48,7 @@ class MainActivityTest{
         val bundle = Bundle()
         bundle.putParcelable(
             KEY_IMAGE_DATA, BitmapFactory.decodeResource(
-                intentsTestRule.getActivity().getResources(),
+                intentsTestRule.activity.resources,
                 R.drawable.ic_launcher_background
             )
         )
